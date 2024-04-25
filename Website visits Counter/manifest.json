@@ -1,0 +1,38 @@
+{
+    "manifest_version": 3,
+    "name": "Website Visits counts",
+    "version": "1.0",
+    "description": "Count the number of times a website is visited by the user.",
+    "author": {
+        "name": "Abdul Moiz",
+        "email": "hello@abdulmoiz.net"
+      },
+      "icons": { 
+        "16": "image/icon.png",
+        "48": "image/icon.png",
+        "128": "image/icon.png"
+    },
+    "action": {
+        "default_title": "Website Visits counts",
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+        "16": "image/icon.png",
+        "48": "image/icon.png",
+        "128": "image/icon.png"
+        }
+    },
+    "permissions": [
+        "activeTab", "storage", "tabs"
+    ],
+    "background": {
+        "service_worker": "background/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript/contentScript.js"]
+        }
+    ]
+    
+
+}
