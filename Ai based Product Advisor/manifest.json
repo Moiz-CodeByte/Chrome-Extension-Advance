@@ -2,14 +2,14 @@
   "manifest_version": 3,
   "name": "Ai Based Product Advisor",
   "version": "1.0",
-  "description": "Fetches content from a web page and stores it in local storage",
+  "description": "Recommends the products using ai",
   "permissions": ["storage" , "activeTab"],
   "action": {
     "default_title": "Ai Based Product Advisor",
     "default_popup": "popup/popup.html",
     "default_icon": {
     "16": "image/icon.png",
-    "48": "image/icon.png",
+    "48": "image/icon.png" ,
     "128": "image/icon.png"
     }
   },

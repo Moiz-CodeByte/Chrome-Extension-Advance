@@ -1,32 +1,39 @@
-/* Container to hold popup content */
 .container {
     width: 200px;
     padding: 20px;
-    background-color: #f9f9f9; /* Light neutral background */
+    background-color: #f9f9f9; 
     text-align: center;
-    font-family: Arial, sans-serif; /* Simple, easy-to-read font */
+    font-family: Arial, sans-serif;
   }
-  
-  /* Heading style */
-  h2 {
-    color: #333; /* Dark text color for contrast */
+h2{
+    color: #333; 
     margin-bottom: 15px;
     font-size: 25px;
   }
-  
-  /* Button style */
   .fetch-button {
-    padding: 10px 20px; /* Padding for comfortable clicking */
-    background-color: #007BFF; /* A blue shade for the button */
-    color: white; /* White text for contrast */
-    border: none; /* No border for a cleaner look */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition on hover */
+    padding: 10px 20px; 
+    background-color: #007BFF; 
+    color: white; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
   }
-  
-  /* Button hover effect */
   .fetch-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3; 
   }
-  
+   #recommendation-result {
+    
+    background-color: #f5f5f5; 
+    padding: 10px;
+    /* border: 1px solid #cccccc;
+    border-radius: 5px; */
+    text-align: left;
+    font-size: 16px; 
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+    width: 100%; 
+}
+.result-container {
+    
+}

@@ -1,29 +1,26 @@
-// Function to fetch content from the page
-function fetchContent() {
+function fetchContent(sendResponse) {
   const elements = document.body.getElementsByClassName('review-content-sl');
   const contentArray = [];
+  window.scrollTo(0, 500); 
 
-  // Check if there are enough elements
-  if (elements.length < 3) {
-    console.log('Not enough elements with class "review-content-sl" found');
+  if (elements.length < 3) {  
+    sendResponse({ status: 'Not' });
+    console.log('Not enough data about a product to make a recommendation.');
     return;
   }
 
-  // Collect first three elements
   for (let i = 0; i < 3; i++) {
     contentArray.push(elements[i].innerText);
   }
 
-  // Store in local storage
   chrome.storage.local.set({ 'reviewContents': contentArray }, () => {
     console.log('Content stored in local storage:', contentArray);
   });
 }
 
-// Listen for messages from the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fetchContent') {
-    fetchContent();
+    fetchContent(sendResponse);
     sendResponse({ status: 'Content fetched and stored.' });
   }
 });
