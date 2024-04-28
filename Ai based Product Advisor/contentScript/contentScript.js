@@ -1,32 +1,32 @@
-// function sleep(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
+function fetchContent(sendResponse) {
+  window.scrollTo(0, 500); 
 
-async function fetchContent(sendResponse) {
-  const elements = document.body.getElementsByClassName('review-content-sl');
-  const contentArray = [];
-  window.scrollTo(0, 700); 
-  // await sleep(4000);
-    
-  if (elements.length < 2) {  
-    sendResponse({ status: 'Not' });
-    console.log('Not enough data about a product to make a recommendation.');
-    return;
-  }
+  const checkElementsLoaded = setInterval(() => {
+    const elements = document.body.getElementsByClassName('review-content-sl');
+    if (elements.length < 2) {
+      console.log('Not enough data about a product to make a recommendation.');
+      clearInterval(checkElementsLoaded); 
+      sendResponse({ status: 'Not' });
+      return;
+    }
 
-  for (let i = 0; i < 3; i++) {
-    contentArray.push(elements[i].innerText);
-  }
+    clearInterval(checkElementsLoaded); 
 
-  chrome.storage.local.set({ 'reviewContents': contentArray }, () => {
-    console.log('Content stored in local storage:', contentArray);
-  });
-}
+    const contentArray = [];
+    for (let i = 0; i < 2; i++) {
+      contentArray.push(elements[i].innerText);
+    }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.storage.local.set({ 'reviewContents': contentArray }, () => {
+      console.log('Content stored in local storage:', contentArray);
+      sendResponse({ status: 'Content fetched and stored.' });
+    });
+  }, 1000); 
+ }
+ 
+ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'fetchContent') {
     fetchContent(sendResponse);
-    sendResponse({ status: 'Content fetched and stored.' });
-    return true;
+    return true; // Keep sendResponse valid for asynchronous use
   }
-})
+});

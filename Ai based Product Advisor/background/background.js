@@ -22,7 +22,7 @@ async function getRecommendation(reviewContents) {
         body: JSON.stringify({
           messages,
           model: 'mixtral-8x7b-32768',
-          temperature: 1,  
+          temperature: 1.2,  
           max_tokens: 1024,
         }),
       });
@@ -39,8 +39,9 @@ async function getRecommendation(reviewContents) {
     }
   }
 
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getRecommendation') {
+      console.log("getting Reecommendation");
       getRecommendation(request.reviewContents).then((recommendation) => {
         sendResponse(recommendation);
 
@@ -48,9 +49,4 @@ async function getRecommendation(reviewContents) {
       return true;
     }
   });
-  
 
-
-
-
-//   tell me in two words that the product is recommended or not as well as  rate the product overall out of 10 based on the reviews that user had provided

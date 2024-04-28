@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Ai Based Product Advisor",
+  "name": "Ai Product Advisor",
   "version": "1.0",
-  "description": "Recommends the products using ai. Gives answer in the popup.",
+  "description": "Recommends the products using ai.Inject a button using content script on daraz.pk product page to get the recommendations.",
 "permissions": ["storage" , "activeTab", "tabs", "scripting"],
   "action": {
-    "default_title": "Ai Based Product Advisor",
+    "default_title": "Ai Product Advisor",
     "default_popup": "popup/popup.html",
     "default_icon": {
     "16": "image/icon.png",
@@ -13,10 +13,14 @@
     "128": "image/icon.png"
     }
   },
+  
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript/contentScript.js"]
+      "matches": ["https://www.daraz.pk/products/*"],  
+      "js": ["contentScript/contentScript.js"],  
+      "css": ["contentScript/contentScript.css"], 
+      "run_at": "document_end"
+
       
     }
   ],
