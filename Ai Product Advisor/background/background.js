@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
        content: 'Analyze the last three reviews for a product and its overall user rating. Provide a two-word recommendation (e.g., "Highly Recommended") and a rating out of 10. Only give the short answer."' },
       {
         role: 'user',
-        content: `Based on the following reviews, rating and total number of reviews, please provide a two-word recommendation and a rating out of 10:
+        content: `Based on the following reviews, rating and total number of reviews, please provide a two-word recommendation and a rating out of 10 only:
                   Reviews: ${request.content.join('\n')}, 
                   Rating: ${request.score},
                   total number of reviews: ${request.rateNum}`
@@ -35,6 +35,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.error('Error while fetching recommendation:', error);
         sendResponse({ success: false, message: 'Failed to fetch recommendation.' });
       });
-    return true; // To keep the messaging channel open until we send a response
+    return true; 
   }
 });

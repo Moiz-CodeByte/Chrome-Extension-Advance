@@ -22,7 +22,7 @@
         }
     },
     "permissions": [
-        "activeTab", "storage", "tabs"
+        "activeTab", "storage", "tabs", "sessions"
     ],
     "background": {
         "service_worker": "background/background.js"

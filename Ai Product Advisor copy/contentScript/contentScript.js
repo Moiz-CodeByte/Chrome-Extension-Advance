@@ -42,7 +42,7 @@ function injectButton() {
       }
   
       // Send a message to the background script with the content and API key
-      const apiKey = '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'; 
+      const apiKey = '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'; // Replace with your Groq API key
       chrome.runtime.sendMessage({
         action: 'fetch_recommendation',
         content: contentArray,
@@ -113,3 +113,22 @@ function displayRecommendation(recommendation) {
 
 
   injectButton();
+
+  var text = '';
+
+  displayRecommendation('');
+
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log('Message received:', message);
+    if(message.action === 'show_recommendation') {
+      const resultElement = document.querySelector('#recommendation-result');
+      // Append the incoming recommendation to the existing text content
+      const messageContainer = document.createElement("div");
+  messageContainer.id = "recommendation-result";
+  messageContainer.textContent  += message.recommendation;
+  document.body.appendChild(messageContainer);
+      //resultElement.textContent ;
+      //text += message.recommendation;
+      // document.querySelector('#recommendation-result').textContent = text;
+    }
+  })

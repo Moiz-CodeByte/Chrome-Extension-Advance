@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Counter</title>
-    <script src="popup.js"></script>
+  <meta charset="UTF-8">
+  <title>URL Counter</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="popup.js" defer></script>
 </head>
 <body>
-    <h1>Website Counter</h1>
-    <div id="counters"></div>
+  <div id="container">
+    <h1>URL Counter</h1>
+    <input type="text" id="new-url" placeholder="Add new URL" />
+    <button id="add-url">Add URL</button>
+    <ul id="url-list"></ul>
+  </div>
 </body>
 </html>

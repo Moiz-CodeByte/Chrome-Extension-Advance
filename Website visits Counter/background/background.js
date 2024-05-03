@@ -1,49 +1,52 @@
-let websites = [ 
-  "https://afluencer.com", 
-  "https://ads.microsoft.com",  
-  "https://www.adobe.com",
-  "https://stackoverflow.com",
-  "https://keep.google.com",
-  "https://www.producthunt.com",
-  "https://dribbble.com",
-  "https://www.designernews.co",
-  "https://www.indiehackers.com",
-  "https://dev.to"
-]; 
-
-chrome.runtime.onInstalled.addListener(() => {
-  initializeCounters();
-});
-
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
-      updateCounter(tab.url);
+  if (changeInfo.url) {
+    const updatedUrl = new URL(changeInfo.url);
+    const hostname = updatedUrl.hostname;
+    const parts = hostname.split('.');
+
+    let keyword;
+    if (parts.length >= 3) {
+      keyword = parts[1];
+    } else if (parts.length === 2) {
+      keyword = parts[0];
+    }
+
+    // Check if the session storage contains the keyword
+    chrome.storage.session.get('urls', ({ urls: sessionUrls = {} }) => {
+      if (!Object.keys(sessionUrls).some((storedUrl) => storedUrl.includes(keyword))) {
+        // If the keyword is not in session storage, it's a new session
+        chrome.storage.local.get('urls', ({ urls = {} }) => {
+          const matchingUrls = Object.keys(urls).filter((storedUrl) => {
+            try {
+              if (!storedUrl.startsWith('http://') && !storedUrl.startsWith('https://')) {
+                storedUrl = 'https://' + storedUrl;
+              }
+
+              const storedHostname = new URL(storedUrl).hostname;
+              return storedHostname.includes(keyword);
+            } catch (e) {
+              console.error('Invalid stored URL:', storedUrl);
+              return false;
+            }
+          });
+
+          if (matchingUrls.length > 0) {
+            // Increment counts for all matching URLs
+            matchingUrls.forEach((matchingUrl) => {
+              urls[matchingUrl] = (urls[matchingUrl] || 0) + 1;
+            });
+
+            // Store the updated counts in local storage
+            chrome.storage.local.set({ urls }, () => {
+              console.log('Updated URL counts:', urls);
+            });
+
+            // Mark this keyword as visited in this session
+            sessionUrls[changeInfo.url] = true;
+            chrome.storage.session.set({ urls: sessionUrls });
+          }
+        });
+      }
+    });
   }
 });
-
-function initializeCounters() {
-  let websiteCounters = {};
-  websites.forEach(website => {
-      websiteCounters[website] = 0;
-  });
-  chrome.storage.local.set({ websiteCounters });
-}
-
-function updateCounter(url) {
-  let domain = (new URL(url)).origin;
-
-  if (!websites.includes(domain)) {
-      return; // Skip counting if the domain is not in the specified websites
-  }
-
-  chrome.storage.local.get('websiteCounters', ({ websiteCounters }) => {
-      if (websiteCounters.hasOwnProperty(domain)) {
-          websiteCounters[domain]++;
-      } else {
-          websiteCounters[domain] = 1;
-      }
-      chrome.storage.local.set({ websiteCounters }, () => {
-          console.log(`Counter for ${domain}: ${websiteCounters[domain]}`);
-      });
-  });
-}

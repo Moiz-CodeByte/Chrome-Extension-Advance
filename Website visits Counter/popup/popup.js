@@ -1,14 +1,34 @@
-chrome.storage.local.get('websiteCounters', ({ websiteCounters }) => {
-  const countersDiv = document.getElementById('counters');
-  for (const website in websiteCounters) {
-      const counterElement = document.createElement('p');
-      counterElement.textContent = `${website}: ${websiteCounters[website]}`;
-      countersDiv.appendChild(counterElement);
-  }
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const urlInput = document.getElementById('new-url');
+  const addButton = document.getElementById('add-url');
+  const urlList = document.getElementById('url-list');
 
-// Add event listener to clear storage on button click (optional)
-// document.getElementById('clearStorageBtn').addEventListener('click', () => {
-//   chrome.storage.local.clear();
-//   location.reload(); // Reloads the extension popup to reflect cleared data
-// });
+  // Function to load the current URL counts
+  const loadUrls = () => {
+    chrome.storage.local.get('urls', ({ urls = {} }) => {
+      urlList.innerHTML = ''; // Clear existing list
+      for (const [url, count] of Object.entries(urls)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${url}: ${count}`;
+        urlList.appendChild(listItem);
+      }
+    });
+  };
+
+  // Add URL to the storage and reload the list
+  addButton.addEventListener('click', () => {
+    const newUrl = urlInput.value.trim();
+    if (newUrl) {
+      chrome.storage.local.get('urls', ({ urls = {} }) => {
+        urls[newUrl] = urls[newUrl] || 0;
+        chrome.storage.local.set({ urls }, () => {
+          urlInput.value = ''; // Clear the input
+          loadUrls(); // Reload the URL list
+        });
+      });
+    }
+  });
+
+  // Initial load of URLs
+  loadUrls();
+});
