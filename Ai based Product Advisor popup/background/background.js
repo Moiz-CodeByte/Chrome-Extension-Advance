@@ -1,5 +1,5 @@
 async function getRecommendation(reviewContents) {
-    const apiKey = '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';  
+    const apiKey = process.env.apiKey;  
     const apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
   
     const messages = [

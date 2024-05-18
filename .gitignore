@@ -1,0 +1,15 @@
+# Configuration files
+config.json
+
+# Environment variables file
+.env
+
+# Node modules (if using Node.js)
+node_modules/
+
+# Logs
+*.log
+
+# OS or Editor specific files
+.DS_Store
+*.swp

@@ -42,7 +42,7 @@ function injectButton() {
       }
   
       // Send a message to the background script with the content and API key
-      const apiKey = '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'; 
+      const apiKey = 'your-grok-api-key'; 
       chrome.runtime.sendMessage({
         action: 'fetch_recommendation',
         content: contentArray,
